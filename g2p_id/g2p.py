@@ -3,7 +3,7 @@ import os
 import re
 
 import numpy as np
-import onnxruntime
+import onnxruntime as ort
 from nltk.tokenize import TweetTokenizer
 from sacremoses import MosesDetokenizer
 
@@ -70,7 +70,10 @@ class Predictor:
         self.vocab = ['', '[UNK]', 'a', 'n', 'ê', 'e', 'i', 'r', 'k', 's', 't', 'g', 'm', 'u', 'l', 'p', 'o', 'd', 'b', 'h', 'c', 'j', 'y', 'f', 'w', 'v', 'z', 'x', 'q', '[mask]']
         self.mask_token_id = self.vocab.index("[mask]")
         # fmt: on
-        self.session = onnxruntime.InferenceSession(model_path)
+        self.session = ort.InferenceSession(
+            path=model_path,
+            providers=['CPUExecutionProvider']
+            )
 
     def predict(self, word: str) -> str:
         """
