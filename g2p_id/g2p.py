@@ -71,8 +71,8 @@ class Predictor:
         self.mask_token_id = self.vocab.index("[mask]")
         # fmt: on
         self.session = ort.InferenceSession(
-            path=model_path,
-            providers=['CPUExecutionProvider']
+            model_path,
+            providers=ort.get_available_providers()
             )
 
     def predict(self, word: str) -> str:
